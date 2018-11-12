@@ -84,45 +84,48 @@ def selectionSort(lis):
 
   return (comp, inter, despl)
 
-
-def parent(index):
-    return int((index-1)/2)
-
-def leftChild(index):
-    return (index*2)+1
-
-def rightChild(index):
-    return (index*2)+2
-
-def swap(arr, parent, child):
-    if child>parent:
-        temp=arr[parent]
-        arr[parent]=arr[child]
-        arr[child]=temp
-
-def heapify(arr, n, parent):                
-    toSwap = parent
- 
-    if leftChild(parent) < n and arr[toSwap] < arr[leftChild(parent)]:
-        toSwap = leftChild(parent)
- 
-    if rightChild(parent) < n and arr[toSwap] < arr[rightChild(parent)]:
-        toSwap = rightChild(parent)
- 
-    if toSwap != parent:
-        swap(arr,parent,toSwap)
-        heapify(arr, n, toSwap)
-        
-def heapSort(arr):
+def heapify(lis, n, parent): 
     comp = 0
-    inter = 0
-    despl = 0
-    for i in range(len(arr), -1, -1):
-      heapify(arr, len(arr), i)
-      
-    for i in range(len(arr)-1, 0, -1):
-      swap(arr,0,i)
-      heapify(arr, i, 0)
+    swaps = 0
+    swapping = parent
+    rightchild = 2 * parent +2
+    leftchild = 2 * parent +1
+    
+    if leftchild < n and lis[parent] < lis[leftchild]: 
+        swapping = leftchild 
+        comp += 1
+        
+    if rightchild < n and lis[swapping] < lis[rightchild]: 
+        swapping = rightchild 
+        comp += 1
+        
+    if swapping != parent: 
+        lis[parent],lis[swapping] = lis[swapping],lis[parent] 
+        heapify(lis, n, swapping)
+        swaps += 1
+        
+    return (comp, swaps)
+  
+def heapSort(lis): 
+    n = len(lis) 
+    comp = 0
+    swaps = 0
+
+    for i in range(n, -1, -1): 
+        comp2, swaps2 = (heapify(lis, n, i)) 
+        comp += comp2
+        swaps += swaps2
+
+    for i in range(n-1, 0, -1): 
+        lis[i], lis[0] = lis[0], lis[i]
+        comp3, swaps3 = (heapify(lis, i, 0))
+        comp += comp3
+        swaps += swaps3
+        if aleatoria == 0:
+            print(lis)
+    print("El número de comparaciones que se hicieron fue: ", comp)
+    print("El número de intercambios que se hicieron fue: ", swaps)
+    return(lis)
 
 def mergeSort(lis):
   comp = 0
